@@ -1,3 +1,4 @@
+DGX.md
 *.pth
 *.pkl
 src/dataloader/datasets/

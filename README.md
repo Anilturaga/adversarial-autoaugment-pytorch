@@ -10,24 +10,30 @@ I want some help from those who know how to solve these issues.
 
 
 ## Quick Start
+
+#### Run with default configs
+
 ```
-# Run with default configs
 # Training with DistributedDataParallel
-$ python -m torch.distributed.launch --nproc_per_node ${NUM_GPUS} main.py -- amp >> output.log
+$ python3 -m torch.distributed.launch --nproc_per_node ${NUM_GPUS} main.py --amp >> output.log
 
 # Training with DataParallel
-$ python main.py --seed 0 -- amp >> output.log
+$ python3 main.py --amp >> output.log
 
 # Evaluate
-$ python evaluate.py  
+$ python3 evaluate.py  
+```
 
+#### More options
+
+```
 # Training with DistributedDataParallel
 $ python -m torch.distributed.launch --nproc_per_node ${NUM_GPUS} main.py \
     --load_conf ${conf_dir} \
     --logdir './logs' \
     --M 8 \ 
     --seed 0 \
-    -- amp \ 
+    --amp \ 
     >> output.log
 
 # Training with DataParallel
@@ -36,7 +42,7 @@ $ python main.py \
     --logdir './logs' \
     --M 8 \ 
     --seed 0 \
-    -- amp \
+    --amp \
     >> output.log
 
 # Evaluate
