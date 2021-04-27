@@ -9,9 +9,18 @@ I want some help from those who know how to solve these issues.
 - Adversarial Collapsing : See /Examples/Analysis.ipynb
 
 
-
 ## Quick Start
 ```
+# Run with default configs
+# Training with DistributedDataParallel
+$ python -m torch.distributed.launch --nproc_per_node ${NUM_GPUS} main.py -- amp >> output.log
+
+# Training with DataParallel
+$ python main.py --seed 0 -- amp >> output.log
+
+# Evaluate
+$ python evaluate.py  
+
 # Training with DistributedDataParallel
 $ python -m torch.distributed.launch --nproc_per_node ${NUM_GPUS} main.py \
     --load_conf ${conf_dir} \

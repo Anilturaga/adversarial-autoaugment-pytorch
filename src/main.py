@@ -13,9 +13,9 @@ from utils import *
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Unofficial Implementation of Adversarial Autoaugment')
-    parser.add_argument('--load_conf', type = str)
-    parser.add_argument('--logdir', type = str)
-    parser.add_argument('--M', type = int)
+    parser.add_argument('--load_conf', type = str,default = './confs/cifar10/wresnet28x10_cifar10.yaml')
+    parser.add_argument('--logdir', type = str,'./logs')
+    parser.add_argument('--M', type = int,default=8)
     parser.add_argument('--seed', type = int, default = 0)
     parser.add_argument('--local_rank', type = int, default = -1)
     parser.add_argument('--amp', action='store_true')
