@@ -58,4 +58,4 @@ if __name__ == '__main__':
     testset = torchvision.datasets.CIFAR10(root='./testDataset/', train=False, download=True,transform=transform_test)
     optimizer = SGD(model.parameters(), lr = 0.01, momentum = 0.9, nesterov = True, weight_decay = 1e-4)
     scheduler = CosineAnnealingLR(optimizer, T_max = 2)
-    untangleai.train_augment(model,optimizer,scheduler,trainset,testset,args,1)
+    trained_model = untangleai.train_augment(model,optimizer,scheduler,trainset,testset,args,1)

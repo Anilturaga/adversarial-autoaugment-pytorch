@@ -99,5 +99,5 @@ class UntangleAI(object):
             'experiment_ID': str(experiment_ID)
         }
         exp_path = self.check_update_compatibility(tool,args)
-        augment_api.train_augment(model,optimizer,scheduler,train_dataset,valid_dataset,args,exp_path)
+        return augment_api.train_augment(model,optimizer,scheduler,train_dataset,valid_dataset,args,exp_path)
         
