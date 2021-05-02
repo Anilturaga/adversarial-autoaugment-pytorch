@@ -49,11 +49,11 @@ if __name__ == '__main__':
     args= TrainAugmentArgs()
     untangleai = UntangleAI()
     model = LeNet()
+    #No need to use transforms.ToTensor as we do it internally
+    #Empty transforms.compose([]) can also be used
     transform_train = transforms.Compose([
                 transforms.RandomCrop(32, padding=4),transforms.RandomHorizontalFlip(),])
-    transform_test = transforms.Compose([
-            transforms.ToTensor(),
-        ])
+    transform_test = transforms.Compose([])
     trainset = torchvision.datasets.CIFAR10(root='./testDataset/', train=True, download=True,transform=transform_train,)
     testset = torchvision.datasets.CIFAR10(root='./testDataset/', train=False, download=True,transform=transform_test)
     optimizer = SGD(model.parameters(), lr = 0.01, momentum = 0.9, nesterov = True, weight_decay = 1e-4)

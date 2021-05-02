@@ -68,6 +68,8 @@ def main(local_rank,model,optimizer,scheduler,train_dataset,valid_dataset,args,e
         if epoch == 0:
             train_loader.dataset.transform.transforms.append(MultiAugmentation(parsed_policies))
             train_loader.dataset.transform.transforms.append(transforms.Lambda(lambda imgs: torch.stack([transforms.ToTensor()(img) for img in imgs])))
+            test_loader.dataset.transform.transforms.append(transforms.ToTensor())
+            
         else:
             train_loader.dataset.transform.transforms[-2] = MultiAugmentation(parsed_policies)
         train_loss = 0
