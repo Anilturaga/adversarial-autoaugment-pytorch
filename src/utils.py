@@ -22,7 +22,7 @@ def accuracy(output, target, topk=(1,)):
     """Computes the precision@k for the specified values of k"""
     maxk = max(topk)
     batch_size = target.size(0)
-
+    #To support dataparallel, try using reduced_metric logic
     _, pred = output.topk(maxk, 1, True, True)
     pred = pred.t()
     correct = pred.eq(target.view(1, -1).expand_as(pred))
@@ -108,7 +108,8 @@ class Logger:
         
 def reduce_tensor(tensor, num_gpus):
     rt = tensor.clone()
-    dist.all_reduce(rt, op=dist.reduce_op.SUM)
+    #Changed reduce_op to ReduceOp version compatibility 
+    dist.all_reduce(rt, op=dist.ReduceOp.SUM)
     rt /= num_gpus
     return rt
 
@@ -116,7 +117,7 @@ def reduced_metric(metric,num_gpus,ddp=True):
     if ddp:
         reduced_loss = reduce_tensor(metric.data, num_gpus)
         return reduced_loss.item()
-    return loss.item()
+    return metric.item()
 
 def load_yaml(dir):
     loader = yaml.SafeLoader

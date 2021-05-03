@@ -53,9 +53,10 @@ def extract_tar(src, dest=None, gzip=None, delete=False):
     
 def parse_args():
     parser = argparse.ArgumentParser(description='EVALUATION')
-    parser.add_argument('--load_conf', type = str)
-    parser.add_argument('--logdir', type = str)
+    parser.add_argument('--load_conf', type = str, default = './confs/cifar10/wresnet28x10_cifar10.yaml')
+    parser.add_argument('--logdir', type = str, default = './logs')
     parser.add_argument('--seed', type = int, default = 0)
+    parser.add_argument('--local_rank', type = int, default = -1)
     args = parser.parse_args()
     return args
 
