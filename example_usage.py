@@ -1,3 +1,11 @@
+""" Driver script for signal estimation services.
+        [1] signal estimation
+        [2] signal attribution of a point
+"""
+__author__ = "Rahul Soni"
+__copyright__ = "Untangle License"
+__version__ = "1.0.6"
+
 
 import torch
 import torch.nn as nn
