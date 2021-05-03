@@ -1,11 +1,12 @@
-""" Driver script for signal estimation services.
-        [1] signal estimation
-        [2] signal attribution of a point
+""" Driver script for training with Adversarial AutoAugment.
+        [1] Training with train_augment
+        [2] Results from test dataset
 """
-__author__ = "Rahul Soni"
+__author__ = "Anil Turaga"
 __copyright__ = "Untangle License"
-__version__ = "1.0.6"
-
+__version__ = "2.0.0"
+__status__ = "Development"
+__date__ = "03/May/2021"
 
 import torch
 import torch.nn as nn
@@ -14,16 +15,19 @@ import torchvision
 from torch.optim import SGD
 from torch.optim.lr_scheduler import CosineAnnealingLR
 from torchvision.transforms import transforms
-
+import pickle
 from untangle import UntangleAI
+
 class TrainAugmentArgs:
-    num_gpus = 8
+    """
+    A new directory 'mname' is created with sub-directory named train_augment/'experiment_ID' 
+    """
+    mname = 'test_net'
     num_class = 10
     batch_size = 128
-    mname = 'test_net'
     epoch = 600
-    experiment_ID = 7
     gpu_count = 8
+    experiment_ID = 1
 
 class LeNet(nn.Module):
     # TODO: This isn't really a LeNet, but we implement this to be
@@ -53,17 +57,29 @@ class LeNet(nn.Module):
         output = output.view(-1, 16 * 5 * 5)
         output = self.classifier(output)
         return output
+
 if __name__ == '__main__':
     args= TrainAugmentArgs()
     untangleai = UntangleAI()
     model = LeNet()
-    #No need to use transforms.ToTensor as we do it internally
-    #Empty transforms.compose([]) can also be used
+    #No need to use transforms.ToTensor as train_augment handles it internally
     transform_train = transforms.Compose([
                 transforms.RandomCrop(32, padding=4),transforms.RandomHorizontalFlip(),])
+    #Empty transforms.compose([]) should be used if there are no transforms. e.g. MNIST dataset
     transform_test = transforms.Compose([])
     trainset = torchvision.datasets.CIFAR10(root='./testDataset/', train=True, download=True,transform=transform_train,)
     testset = torchvision.datasets.CIFAR10(root='./testDataset/', train=False, download=True,transform=transform_test)
     optimizer = SGD(model.parameters(), lr = 0.01, momentum = 0.9, nesterov = True, weight_decay = 1e-4)
     scheduler = CosineAnnealingLR(optimizer, T_max = 2)
-    trained_model = untangleai.train_augment(model,optimizer,scheduler,trainset,testset,args,1)
+    
+    #train_augment returns the trained model(best loss model)
+    #Checkpoint models such as model at the end of each epoch are saved in 'mname'/train_augment/'experiment_ID'/models/ for custom experiments
+    trained_model = untangleai.train_augment(model,optimizer,scheduler,trainset,testset,args)
+    
+    
+    #Logs such as policies and losses are saved in 'mname'/train_augment/'experiment_ID'/logs.pkl
+    with open('test_net/train_augment/1/logs.pkl', 'rb') as f: 
+        data = pickle.load(f)
+        print(data) 
+
+

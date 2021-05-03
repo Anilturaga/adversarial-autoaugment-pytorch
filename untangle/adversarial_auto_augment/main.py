@@ -90,7 +90,7 @@ def main(local_rank,model,optimizer,scheduler,train_dataset,valid_dataset,args,e
             scaler.update()        
 
             for i,_loss in enumerate(losses):
-                Lm[i] += reduced_metric(_loss.detach(), args.num_gpus, local_rank !=-1) / len(train_loader)
+                Lm[i] += reduced_metric(_loss.detach(), args.gpu_count, local_rank !=-1) / len(train_loader)
             
             top1 = None
             top5 = None
@@ -99,9 +99,9 @@ def main(local_rank,model,optimizer,scheduler,train_dataset,valid_dataset,args,e
                 top1 = top1 + _top1/M if top1 is not None else _top1/M
                 top5 = top5 + _top5/M if top5 is not None else _top5/M
             
-            train_loss += reduced_metric(loss.detach(), args.num_gpus, local_rank !=-1) / len(train_loader)
-            train_top1 += reduced_metric(top1.detach(), args.num_gpus, local_rank !=-1) / len(train_loader)
-            train_top5 += reduced_metric(top5.detach(), args.num_gpus, local_rank !=-1) / len(train_loader)
+            train_loss += reduced_metric(loss.detach(), args.gpu_count, local_rank !=-1) / len(train_loader)
+            train_top1 += reduced_metric(top1.detach(), args.gpu_count, local_rank !=-1) / len(train_loader)
+            train_top5 += reduced_metric(top5.detach(), args.gpu_count, local_rank !=-1) / len(train_loader)
             
             progress_bar.set_description('Step: {}. LR : {:.5f}. Epoch: {}/{}. Iteration: {}/{}. Train_Loss : {:.5f}'.format(step, optimizer.param_groups[0]['lr'], epoch, args.epoch, idx + 1, len(train_loader), loss.item()))
             step += 1
@@ -134,9 +134,9 @@ def main(local_rank,model,optimizer,scheduler,train_dataset,valid_dataset,args,e
                 loss = criterion(pred,label)
 
                 top1, top5 = accuracy(pred, label, (1, 5))
-                valid_loss += reduced_metric(loss.detach(), args.num_gpus, local_rank !=-1) *b 
-                valid_top1 += reduced_metric(top1.detach(), args.num_gpus, local_rank !=-1) *b
-                valid_top5 += reduced_metric(top5.detach(), args.num_gpus, local_rank !=-1) *b 
+                valid_loss += reduced_metric(loss.detach(), args.gpu_count, local_rank !=-1) *b 
+                valid_top1 += reduced_metric(top1.detach(), args.gpu_count, local_rank !=-1) *b
+                valid_top5 += reduced_metric(top5.detach(), args.gpu_count, local_rank !=-1) *b 
                 cnt += b
             
             valid_loss = valid_loss / cnt

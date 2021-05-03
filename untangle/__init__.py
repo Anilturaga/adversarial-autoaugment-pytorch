@@ -92,12 +92,12 @@ class UntangleAI(object):
             return exp_path
 
 
-    def train_augment(self,model,optimizer,scheduler,train_dataset,valid_dataset,args,experiment_ID):
+    def train_augment(self,model,optimizer,scheduler,train_dataset,valid_dataset,args):
         if not is_available() or args.gpu_count == 0:
             raise Exception("Sorry, cuda not found.")
         tool={
             'name': 'train_augment',
-            'experiment_ID': str(experiment_ID)
+            'experiment_ID': str(args.experiment_ID)
         }
         exp_path = self.check_update_compatibility(tool,args)
         return augment_api.train_augment(model,optimizer,scheduler,train_dataset,valid_dataset,args,exp_path)
