@@ -85,7 +85,8 @@ class UntangleAI(object):
                     os.makedirs(dirs)
             exp_path = os.path.abspath(os.path.join(train_augment_path, tool['experiment_ID']))
             if (os.path.exists(exp_path)):
-                raise Exception("Experiment with this ID already exists. Please use a new ID or delete this experiment using delete_signal_experiment fucntion")
+                #raise Exception("Experiment with this ID already exists. Please use a new ID or delete this experiment using delete_signal_experiment fucntion")
+                print()
             else:
                 os.makedirs(exp_path)
             return exp_path
