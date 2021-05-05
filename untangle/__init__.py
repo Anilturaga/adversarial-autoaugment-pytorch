@@ -99,6 +99,6 @@ class UntangleAI(object):
             'name': 'train_augment',
             'experiment_ID': str(args.experiment_ID)
         }
-        exp_path = self.check_update_compatibility(tool,args)
-        return augment_api.train_augment(model,optimizer,scheduler,train_dataset,valid_dataset,args,exp_path)
+        self.train_augment_path = self.check_update_compatibility(tool,args)
+        return augment_api.train_augment(model,optimizer,scheduler,train_dataset,valid_dataset,args,self.train_augment_path)
         

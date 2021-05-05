@@ -73,9 +73,10 @@ if __name__ == '__main__':
     scheduler = CosineAnnealingLR(optimizer, T_max = 2)
     
     #train_augment returns the trained model(best loss model)
-    #Checkpoint models such as model at the end of each epoch are saved in 'mname'/train_augment/'experiment_ID'/models/ for custom experiments
     trained_model = untangleai.train_augment(model,optimizer,scheduler,trainset,testset,args)
     
+    #Checkpoint models such as model at the end of each epoch are saved in 'mname'/train_augment/'experiment_ID'/models/ for custom experiments
+    exp_path = untangleai.train_augment_path # test_net/train_augment/1/
     
     #Logs such as policies and losses are saved in 'mname'/train_augment/'experiment_ID'/logs.pkl
     with open('test_net/train_augment/1/logs.pkl', 'rb') as f: 
